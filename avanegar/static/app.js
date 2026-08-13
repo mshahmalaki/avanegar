@@ -105,17 +105,25 @@ function updateProgress(progress, stage) {
 async function loadCapabilities() {
   try {
     const response = await fetch("/api/capabilities");
-    if (!response.ok) throw new Error();
+    if (!response.ok) {
+      throw new Error(`Capabilities request failed with HTTP ${response.status}`);
+    }
     state.capabilities = await response.json();
     const isDemo = state.capabilities.engine === "demo";
     elements.engineState.className = `engine-state ${isDemo ? "demo" : "ready"}`;
+    elements.engineState.removeAttribute("title");
     elements.engineState.innerHTML = `<span class="status-dot"></span>${
       isDemo ? "حالت نمایشی" : `مدل ${state.capabilities.model}`
     }`;
     const maxLabel = $(".format-list span:last-child");
     maxLabel.textContent = `تا ${faNumber.format(state.capabilities.max_upload_mb)} مگابایت`;
-  } catch {
-    elements.engineState.innerHTML = '<span class="status-dot"></span>اتصال برقرار نیست';
+  } catch (error) {
+    console.error("AvaNegar API is unavailable:", error);
+    elements.engineState.className = "engine-state disconnected";
+    elements.engineState.title =
+      "Backend را با دستور avanegar --reload اجرا کنید و صفحه را دوباره بارگذاری کنید.";
+    elements.engineState.innerHTML =
+      '<span class="status-dot"></span>API در دسترس نیست';
   }
 }
 

@@ -60,6 +60,26 @@ pip install ava-negar
 avanegar
 ```
 
+#### API connection troubleshooting
+
+If the interface shows **“API is unavailable”**, make sure you are serving the
+whole application through AvaNegar rather than opening `index.html` directly or
+using a static-file server:
+
+```bash
+source .venv/bin/activate
+TRANSCRIBER_MODE=demo avanegar --reload
+```
+
+You can verify the backend at `http://127.0.0.1:8000/api/health`. If you run
+Uvicorn directly, use the current package path:
+
+```bash
+uvicorn avanegar.main:app --reload
+```
+
+The former `app.main:app` path is no longer valid.
+
 ### Enable real transcription
 
 ```bash
@@ -191,6 +211,26 @@ uvicorn avanegar.main:app --reload
 pip install ava-negar
 avanegar
 ```
+
+#### رفع مشکل اتصال API
+
+اگر رابط پیام **«API در دسترس نیست»** را نشان می‌دهد، مطمئن شوید کل برنامه را
+با آوانگار اجرا کرده‌اید؛ فایل `index.html` را مستقیم باز نکنید و از static file
+server جداگانه استفاده نکنید:
+
+```bash
+source .venv/bin/activate
+TRANSCRIBER_MODE=demo avanegar --reload
+```
+
+برای بررسی backend آدرس `http://127.0.0.1:8000/api/health` را باز کنید. اگر
+Uvicorn را مستقیم اجرا می‌کنید، از مسیر فعلی package استفاده کنید:
+
+```bash
+uvicorn avanegar.main:app --reload
+```
+
+مسیر قدیمی `app.main:app` دیگر معتبر نیست.
 
 ### فعال‌کردن رونویسی واقعی
 

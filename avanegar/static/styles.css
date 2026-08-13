@@ -310,6 +310,16 @@ footer {
   box-shadow: 0 0 0 4px rgba(228, 154, 69, 0.13);
 }
 
+.engine-state.disconnected {
+  color: #b54e3a;
+  cursor: help;
+}
+
+.engine-state.disconnected .status-dot {
+  background: var(--coral);
+  box-shadow: 0 0 0 4px rgba(237, 118, 92, 0.13);
+}
+
 .drop-zone {
   min-height: 270px;
   display: flex;

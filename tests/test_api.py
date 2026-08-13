@@ -18,6 +18,10 @@ def test_demo_transcription_flow(monkeypatch) -> None:
                 health = await client.get("/api/health")
                 assert health.status_code == 200
 
+                capabilities = await client.get("/api/capabilities")
+                assert capabilities.status_code == 200
+                assert capabilities.json()["engine"] == "demo"
+
                 upload = await client.post(
                     "/api/transcriptions",
                     files={"file": ("sample.wav", b"RIFF" + b"0" * 128, "audio/wav")},
