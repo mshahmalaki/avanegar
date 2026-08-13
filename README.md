@@ -144,8 +144,6 @@ forensically verbatim. Human review is required for high-stakes use cases.
 
 ---
 
-<div dir="rtl">
-
 ## فارسی
 
 **صدای فارسی، به خط فارسی.**
@@ -219,7 +217,7 @@ WHISPER_COMPUTE_TYPE=default
   متوقف می‌کند. این حالت برای محیط تولید پیشنهاد می‌شود.
 - `TRANSCRIBER_MODE=demo` همیشه خروجی نمونه و مشخص‌شده تولید می‌کند.
 
-### Docker
+### داکر
 
 ```bash
 docker compose up --build
@@ -238,7 +236,7 @@ docker run --rm -p 8000:8000 \
   ghcr.io/mshahmalaki/avanegar:latest
 ```
 
-### API
+### رابط برنامه‌نویسی اپلیکیشن
 
 مستندات تعاملی API در `/docs` قرار دارد. روند اصلی:
 
@@ -275,5 +273,3 @@ make package
 
 رونویسی ماشینی برای کاربردهای حقوقی، پزشکی یا قضایی تضمین واژه‌به‌واژه نیست.
 در کاربردهای حساس، بازبینی انسانی ضروری است.
-
-</div>
