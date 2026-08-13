@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="آوانگار؛ تبدیل امن و دقیق صدای فارسی به متن خوانا"
+    />
+    <title>آوانگار | صدای فارسی، به خط فارسی</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="صفحه اصلی آوانگار">
+        <span class="brand-mark" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i>
+        </span>
+        <span>آوانگار</span>
+      </a>
+      <nav class="header-actions" aria-label="پیوندهای اصلی">
+        <span class="privacy-pill">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          پردازش امن و محلی
+        </span>
+        <a class="github-link" href="/docs" aria-label="مستندات API">
+          API
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          ساخته‌شده برای زبان فارسی
+        </div>
+        <h1>صدای فارسی،<br /><span>به خط فارسی.</span></h1>
+        <p>
+          فایل صوتی‌تان را به متن دقیق، روان و قابل استفاده تبدیل کنید؛
+          با درک ظرافت‌های زبان فارسی و احترام کامل به حریم خصوصی شما.
+        </p>
+      </section>
+
+      <section class="workspace" id="workspace">
+        <div class="workspace-head">
+          <div>
+            <span class="step-number">۱</span>
+            <h2>صدایتان را اضافه کنید</h2>
+          </div>
+          <div class="engine-state" id="engineState">
+            <span class="status-dot"></span>
+            در حال بررسی موتور...
+          </div>
+        </div>
+
+        <div class="upload-view" id="uploadView">
+          <div class="drop-zone" id="dropZone" tabindex="0" role="button">
+            <input
+              id="fileInput"
+              type="file"
+              hidden
+              accept=".mp3,.wav,.m4a,.ogg,.webm,.mp4,.mpeg,.flac,audio/*,video/mp4"
+            />
+            <div class="upload-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5" />
+                <path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" />
+              </svg>
+            </div>
+            <h3>فایل صوتی را اینجا رها کنید</h3>
+            <p>یا برای انتخاب فایل کلیک کنید</p>
+            <div class="format-list">
+              <span>MP3</span><span>WAV</span><span>M4A</span><span>OGG</span
+              ><span>تا ۱۰۰ مگابایت</span>
+            </div>
+          </div>
+
+          <div class="or-divider"><span>یا</span></div>
+
+          <button class="record-button" id="recordButton" type="button">
+            <span class="record-dot"></span>
+            <span id="recordLabel">ضبط صدا با میکروفون</span>
+            <span class="record-time" id="recordTime">۰۰:۰۰</span>
+          </button>
+        </div>
+
+        <div class="selected-view" id="selectedView" hidden>
+          <div class="file-card">
+            <div class="file-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 18V5l10-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="16" cy="16" r="3" />
+              </svg>
+            </div>
+            <div class="file-info">
+              <strong id="fileName"></strong>
+              <span id="fileMeta"></span>
+            </div>
+            <button class="icon-button" id="removeFile" aria-label="حذف فایل">
+              <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+          </div>
+
+          <div class="options">
+            <h3>تنظیمات خروجی</h3>
+            <label class="option-row">
+              <span>
+                <strong>اصلاح نگارش فارسی</strong>
+                <small>یکسان‌سازی حروف، فاصله‌گذاری و نیم‌فاصله</small>
+              </span>
+              <input type="checkbox" id="normalizeOption" checked />
+              <i class="toggle"></i>
+            </label>
+            <label class="option-row">
+              <span>
+                <strong>نشانه‌گذاری بخش‌های نامطمئن</strong>
+                <small>نمایش صادقانهٔ قسمت‌هایی که نیاز به بازبینی دارند</small>
+              </span>
+              <input type="checkbox" id="uncertainOption" checked />
+              <i class="toggle"></i>
+            </label>
+            <label class="option-row">
+              <span>
+                <strong>برچسب گوینده</strong>
+                <small>آماده‌سازی ساختار متن برای مکالمه‌ها</small>
+              </span>
+              <input type="checkbox" id="speakerOption" />
+              <i class="toggle"></i>
+            </label>
+          </div>
+
+          <button class="primary-button" id="startButton">
+            <span>شروع تبدیل به متن</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="processing-view" id="processingView" hidden>
+          <div class="processing-visual">
+            <div class="pulse-ring"></div>
+            <div class="wave-bars" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+          <h3 id="processingStage">در حال آماده‌سازی فایل صوتی</h3>
+          <p id="processingFile"></p>
+          <div class="progress-track">
+            <div class="progress-value" id="progressValue"></div>
+          </div>
+          <span class="progress-label" id="progressLabel">۰٪</span>
+          <p class="processing-note">فایل پس از پایان پردازش به‌صورت خودکار حذف می‌شود.</p>
+        </div>
+      </section>
+
+      <section class="result-panel" id="resultPanel" hidden>
+        <div class="result-head">
+          <div>
+            <span class="step-number success">
+              <svg viewBox="0 0 24 24"><path d="m6 12 4 4 8-8" /></svg>
+            </span>
+            <div>
+              <h2>متن شما آماده است</h2>
+              <p id="resultSummary"></p>
+            </div>
+          </div>
+          <button class="secondary-button" id="newFileButton">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+            فایل تازه
+          </button>
+        </div>
+
+        <div class="warning-banner" id="warningBanner" hidden>
+          <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10 3 2 20h20L14 3a2.2 2.2 0 0 0-4 0Z" /></svg>
+          <span id="warningText"></span>
+        </div>
+
+        <div class="transcript-toolbar">
+          <div class="view-tabs">
+            <button class="active" data-view="segments">بخش‌بندی‌شده</button>
+            <button data-view="plain">متن یکپارچه</button>
+          </div>
+          <button class="copy-button" id="copyButton">
+            <svg viewBox="0 0 24 24"><path d="M8 8h11v11H8z" /><path d="M16 8V5H5v11h3" /></svg>
+            کپی متن
+          </button>
+        </div>
+
+        <div class="transcript-content" id="transcriptContent"></div>
+
+        <div class="export-row">
+          <span>دریافت خروجی</span>
+          <div>
+            <button data-export="txt">TXT</button>
+            <button data-export="srt">SRT</button>
+            <button data-export="vtt">VTT</button>
+            <button data-export="json">JSON</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <article>
+          <span class="feature-icon coral">
+            <svg viewBox="0 0 24 24"><path d="M12 3v18M8 7v10M4 10v4M16 6v12M20 9v6" /></svg>
+          </span>
+          <h3>فارسی را می‌فهمد</h3>
+          <p>از نیم‌فاصله تا گفتار روزمره و ترکیب واژه‌های فارسی و انگلیسی.</p>
+        </article>
+        <article>
+          <span class="feature-icon green">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="M9 12h6" /></svg>
+          </span>
+          <h3>صدایتان محرمانه می‌ماند</h3>
+          <p>پردازش محلی، نگهداری حداقلی و حذف فایل بلافاصله پس از پردازش.</p>
+        </article>
+        <article>
+          <span class="feature-icon blue">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+          </span>
+          <h3>همراه با زمان‌بندی</h3>
+          <p>هر بخش با زمان دقیق و میزان اطمینان برای بازبینی سریع‌تر.</p>
+        </article>
+      </section>
+    </main>
+
+    <footer>
+      <div class="brand">
+        <span class="brand-mark small" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i>
+        </span>
+        <span>آوانگار</span>
+      </div>
+      <p>ساخته‌شده با احترام به زبان فارسی و حریم خصوصی.</p>
+    </footer>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

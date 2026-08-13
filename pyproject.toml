@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ava-negar"
+version = "0.1.0"
+description = "Privacy-first, local Persian speech-to-text with normalization, timestamps, confidence scores, and subtitle exports."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = [
+  "farsi",
+  "persian",
+  "speech-to-text",
+  "transcription",
+  "whisper",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Web Environment",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: Persian",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "python-multipart>=0.0.12,<1",
+  "pydantic-settings>=2.5,<3",
+]
+
+[project.scripts]
+avanegar = "app.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mshahmalaki/avanegar"
+Documentation = "https://github.com/mshahmalaki/avanegar#readme"
+Issues = "https://github.com/mshahmalaki/avanegar/issues"
+Source = "https://github.com/mshahmalaki/avanegar"
+
+[project.optional-dependencies]
+whisper = ["faster-whisper>=1.1,<2"]
+dev = [
+  "build>=1.2,<2",
+  "httpx>=0.27,<1",
+  "pylint>=3.3,<5",
+  "pytest>=8.3,<9",
+  "ruff>=0.8,<1",
+  "twine>=6,<7",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.package-data]
+app = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-config", "--strict-markers"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.pylint.main]
+py-version = "3.11"
+ignore-paths = [".venv"]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.messages_control]
+disable = [
+  "broad-exception-caught",
+  "duplicate-code",
+  "fixme",
+  "missing-class-docstring",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "too-few-public-methods",
+]
+
+[tool.pylint.design]
+max-args = 8
+max-positional-arguments = 8

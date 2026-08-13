@@ -1,0 +1,17 @@
+services:
+  ava-negar:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      TRANSCRIBER_MODE: "${TRANSCRIBER_MODE:-auto}"
+      WHISPER_MODEL: "${WHISPER_MODEL:-small}"
+      WHISPER_DEVICE: "${WHISPER_DEVICE:-cpu}"
+      WHISPER_COMPUTE_TYPE: "${WHISPER_COMPUTE_TYPE:-int8}"
+    volumes:
+      - whisper-cache:/root/.cache/huggingface
+    restart: unless-stopped
+
+volumes:
+  whisper-cache:
+
