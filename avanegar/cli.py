@@ -22,9 +22,8 @@ def create_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = create_parser().parse_args()
-    uvicorn.run("app.main:app", host=args.host, port=args.port, reload=args.reload)
+    uvicorn.run("avanegar.main:app", host=args.host, port=args.port, reload=args.reload)
 
 
 if __name__ == "__main__":
     main()
-

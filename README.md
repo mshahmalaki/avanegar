@@ -2,6 +2,13 @@
 
 **Persian voice, in Persian text.**
 
+[![CI](https://github.com/mshahmalaki/avanegar/actions/workflows/ci.yml/badge.svg)](https://github.com/mshahmalaki/avanegar/actions/workflows/ci.yml)
+[![Docker](https://github.com/mshahmalaki/avanegar/actions/workflows/docker.yml/badge.svg)](https://github.com/mshahmalaki/avanegar/actions/workflows/docker.yml)
+[![CodeQL](https://github.com/mshahmalaki/avanegar/actions/workflows/codeql.yml/badge.svg)](https://github.com/mshahmalaki/avanegar/actions/workflows/codeql.yml)
+[![PyPI](https://img.shields.io/pypi/v/ava-negar.svg)](https://pypi.org/project/ava-negar/)
+[![Python](https://img.shields.io/pypi/pyversions/ava-negar.svg)](https://pypi.org/project/ava-negar/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 [English](#english) · [فارسی](#فارسی)
 
 ---
@@ -37,7 +44,7 @@ other than WAV.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-uvicorn app.main:app --reload
+uvicorn avanegar.main:app --reload
 ```
 
 Open `http://127.0.0.1:8000`.
@@ -46,12 +53,19 @@ The base installation starts in demo mode. The application clearly identifies
 demo transcripts because they are sample output and are not extracted from the
 uploaded audio.
 
+After the first PyPI release, you can also install and run the application with:
+
+```bash
+pip install ava-negar
+avanegar
+```
+
 ### Enable real transcription
 
 ```bash
 pip install -e ".[whisper]"
 cp .env.example .env
-uvicorn app.main:app --reload
+uvicorn avanegar.main:app --reload
 ```
 
 On its first run, `faster-whisper` downloads the configured model. The default
@@ -80,6 +94,16 @@ docker compose up --build
 The application will be available on port `8000`. Hugging Face model files are
 kept in a dedicated Docker volume; user audio files are not stored there.
 
+Published releases and the latest `main` build are also available from GitHub
+Container Registry:
+
+```bash
+docker run --rm -p 8000:8000 \
+  -e TRANSCRIBER_MODE=auto \
+  -v avanegar-models:/home/avanegar/.cache/huggingface \
+  ghcr.io/mshahmalaki/avanegar:latest
+```
+
 ### API
 
 Interactive API documentation is available at `/docs`. The primary workflow is:
@@ -98,8 +122,20 @@ distributed deployments should replace it with a shared store such as Redis.
 
 ```bash
 pip install -e ".[dev]"
-pytest
+make lint
+make test
+make package
 ```
+
+### Contributing and releases
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development workflow and
+[SECURITY.md](SECURITY.md) for reporting vulnerabilities.
+
+Every pull request runs tests, Ruff, Pylint, package validation, JavaScript
+syntax checks, Docker builds, dependency review, and CodeQL analysis. A
+non-prerelease GitHub Release publishes the matching version to PyPI through
+Trusted Publishing. Tags such as `v0.1.0` publish versioned images to GHCR.
 
 ### Disclaimer
 
@@ -143,7 +179,7 @@ forensically verbatim. Human review is required for high-stakes use cases.
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-uvicorn app.main:app --reload
+uvicorn avanegar.main:app --reload
 ```
 
 سپس آدرس `http://127.0.0.1:8000` را باز کنید.
@@ -151,12 +187,19 @@ uvicorn app.main:app --reload
 در نصب پایه، برنامه در حالت نمایشی اجرا می‌شود و به‌روشنی اعلام می‌کند که متن
 نمونه از محتوای فایل صوتی استخراج نشده است.
 
+پس از نخستین انتشار در PyPI می‌توانید برنامه را به‌شکل زیر نیز نصب و اجرا کنید:
+
+```bash
+pip install ava-negar
+avanegar
+```
+
 ### فعال‌کردن رونویسی واقعی
 
 ```bash
 pip install -e ".[whisper]"
 cp .env.example .env
-uvicorn app.main:app --reload
+uvicorn avanegar.main:app --reload
 ```
 
 در نخستین اجرا، `faster-whisper` مدل تنظیم‌شده را دریافت می‌کند. مدل پیش‌فرض
@@ -185,6 +228,16 @@ docker compose up --build
 برنامه در پورت `8000` در دسترس خواهد بود. فایل‌های مدل Hugging Face در یک
 volume جداگانه نگهداری می‌شوند و فایل‌های صوتی کاربران در آن ذخیره نمی‌شوند.
 
+نسخه‌های منتشرشده و آخرین build شاخهٔ `main` از GitHub Container Registry نیز
+در دسترس هستند:
+
+```bash
+docker run --rm -p 8000:8000 \
+  -e TRANSCRIBER_MODE=auto \
+  -v avanegar-models:/home/avanegar/.cache/huggingface \
+  ghcr.io/mshahmalaki/avanegar:latest
+```
+
 ### API
 
 مستندات تعاملی API در `/docs` قرار دارد. روند اصلی:
@@ -203,8 +256,20 @@ volume جداگانه نگهداری می‌شوند و فایل‌های صوت
 
 ```bash
 pip install -e ".[dev]"
-pytest
+make lint
+make test
+make package
 ```
+
+### مشارکت و انتشار
+
+برای روند توسعه، فایل [CONTRIBUTING.md](CONTRIBUTING.md) و برای گزارش
+آسیب‌پذیری‌ها فایل [SECURITY.md](SECURITY.md) را ببینید.
+
+در هر pull request تست‌ها، Ruff، Pylint، اعتبارسنجی package، بررسی JavaScript،
+ساخت Docker، بررسی وابستگی‌ها و CodeQL اجرا می‌شوند. انتشار نهایی GitHub Release
+نسخهٔ همسان را با Trusted Publishing روی PyPI منتشر می‌کند. tagهایی مانند
+`v0.1.0` نیز image نسخه‌دار را در GHCR قرار می‌دهند.
 
 ### محدودیت مسئولیت
 

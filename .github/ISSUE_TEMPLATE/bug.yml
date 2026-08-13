@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a reproducible problem in AvaNegar.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve AvaNegar. Do not attach sensitive recordings or transcripts.
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start AvaNegar with...
+        2. Upload a synthetic or non-sensitive file...
+        3. Observe...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: v0.1.0, Docker image tag, or commit SHA
+    validations:
+      required: true
+  - type: dropdown
+    id: installation
+    attributes:
+      label: Installation method
+      options:
+        - Python package
+        - Docker or Docker Compose
+        - Source checkout
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, browser, model, and relevant configuration.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Remove secrets, filenames, audio, and transcript content.
+      render: shell
+

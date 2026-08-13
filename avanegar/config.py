@@ -24,4 +24,3 @@ def get_settings() -> Settings:
     settings = Settings()
     settings.temp_dir.mkdir(parents=True, exist_ok=True)
     return settings
-

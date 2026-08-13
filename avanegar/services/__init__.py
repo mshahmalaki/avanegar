@@ -1,2 +1,1 @@
 """Transcription and output services."""
-

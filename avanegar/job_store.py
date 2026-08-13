@@ -1,7 +1,7 @@
 import threading
 from datetime import timedelta
 
-from app.models import TranscriptionJob, utc_now
+from avanegar.models import TranscriptionJob, utc_now
 
 
 class JobStore:
@@ -27,9 +27,6 @@ class JobStore:
     def cleanup(self) -> None:
         cutoff = utc_now() - self._ttl
         with self._lock:
-            expired = [
-                job_id for job_id, job in self._jobs.items() if job.updated_at < cutoff
-            ]
+            expired = [job_id for job_id, job in self._jobs.items() if job.updated_at < cutoff]
             for job_id in expired:
                 del self._jobs[job_id]
-

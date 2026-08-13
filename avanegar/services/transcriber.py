@@ -6,14 +6,14 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import ClassVar
 
-from app.config import Settings
-from app.models import (
+from avanegar.config import Settings
+from avanegar.models import (
     TranscriptionOptions,
     TranscriptResult,
     TranscriptSegment,
     TranscriptWord,
 )
-from app.services.normalizer import ensure_punctuation, normalize_persian
+from avanegar.services.normalizer import ensure_punctuation, normalize_persian
 
 ProgressCallback = Callable[[int, str], None]
 
@@ -83,8 +83,7 @@ class FasterWhisperTranscriber(Transcriber):
                     for word in item.words
                 ]
             uncertain = (
-                confidence is not None
-                and confidence < self.settings.low_confidence_threshold
+                confidence is not None and confidence < self.settings.low_confidence_threshold
             )
             segments.append(
                 TranscriptSegment(
@@ -106,7 +105,8 @@ class FasterWhisperTranscriber(Transcriber):
         warnings = []
         if options.speaker_labels:
             warnings.append(
-                "تفکیک خودکار گویندگان در این نسخه فعال نیست؛ همهٔ بخش‌ها با گوینده ۱ نمایش داده شده‌اند."
+                "تفکیک خودکار گویندگان در این نسخه فعال نیست؛ "
+                "همهٔ بخش‌ها با گوینده ۱ نمایش داده شده‌اند."
             )
         return TranscriptResult(
             text=full_text,
@@ -189,7 +189,8 @@ class DemoTranscriber(Transcriber):
             model="demo",
             segments=segments,
             warnings=[
-                "این خروجی نمایشی است و از محتوای فایل صوتی استخراج نشده است. برای رونویسی واقعی، موتور Whisper را نصب کنید."
+                "این خروجی نمایشی است و از محتوای فایل صوتی استخراج نشده است. "
+                "برای رونویسی واقعی، موتور Whisper را نصب کنید."
             ],
         )
 
@@ -199,9 +200,7 @@ def create_transcriber(settings: Settings) -> Transcriber:
     if settings.transcriber_mode == "demo":
         return DemoTranscriber(settings)
     if settings.transcriber_mode == "whisper" and not whisper_available:
-        raise RuntimeError(
-            "TRANSCRIBER_MODE روی whisper است، اما faster-whisper نصب نشده است."
-        )
+        raise RuntimeError("TRANSCRIBER_MODE روی whisper است، اما faster-whisper نصب نشده است.")
     if whisper_available:
         return FasterWhisperTranscriber(settings)
     return DemoTranscriber(settings)

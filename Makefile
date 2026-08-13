@@ -7,8 +7,8 @@ test:
 	pytest
 
 lint:
-	ruff check app tests
-	pylint app tests
+	ruff check avanegar tests
+	pylint avanegar tests
 
 package:
 	python -m build

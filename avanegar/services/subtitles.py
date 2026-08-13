@@ -1,4 +1,4 @@
-from app.models import TranscriptSegment
+from avanegar.models import TranscriptSegment
 
 
 def format_timestamp(seconds: float, separator: str = ",") -> str:
@@ -30,4 +30,3 @@ def segments_to_vtt(segments: list[TranscriptSegment]) -> str:
             f"{speaker}{segment.text}"
         )
     return "\n\n".join(blocks) + "\n"
-

@@ -1,4 +1,4 @@
-from app.services.normalizer import ensure_punctuation, normalize_persian
+from avanegar.services.normalizer import ensure_punctuation, normalize_persian
 
 
 def test_arabic_variants_are_normalized() -> None:
@@ -20,4 +20,3 @@ def test_punctuation_spacing_is_normalized() -> None:
 def test_punctuation_is_only_added_when_missing() -> None:
     assert ensure_punctuation("سلام") == "سلام."
     assert ensure_punctuation("سلام؟") == "سلام؟"
-

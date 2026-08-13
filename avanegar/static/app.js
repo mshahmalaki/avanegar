@@ -324,4 +324,3 @@ $$("[data-export]").forEach((button) => {
 });
 
 loadCapabilities();
-

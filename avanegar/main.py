@@ -9,35 +9,33 @@ from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadF
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
-from app import __version__
-from app.config import get_settings
-from app.job_store import JobStore
-from app.models import (
+from avanegar import __version__
+from avanegar.config import get_settings
+from avanegar.job_store import JobStore
+from avanegar.models import (
     Capabilities,
     JobStatus,
     TranscriptionJob,
     TranscriptionOptions,
 )
-from app.services.subtitles import segments_to_srt, segments_to_vtt
-from app.services.transcriber import DemoTranscriber, create_transcriber
+from avanegar.services.subtitles import segments_to_srt, segments_to_vtt
+from avanegar.services.transcriber import DemoTranscriber, create_transcriber
 
 settings = get_settings()
 store = JobStore(settings.job_ttl_minutes)
-transcriber = None
 
 SUPPORTED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".ogg", ".webm", ".mp4", ".mpeg", ".flac"}
 STATIC_DIR = Path(__file__).parent / "static"
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI):
-    global transcriber
+async def lifespan(application: FastAPI):
     try:
-        transcriber = create_transcriber(settings)
+        application.state.transcriber = create_transcriber(settings)
     except Exception:
         if settings.transcriber_mode != "auto":
             raise
-        transcriber = DemoTranscriber(settings)
+        application.state.transcriber = DemoTranscriber(settings)
     yield
 
 
@@ -63,21 +61,25 @@ async def process_audio(job_id: str, path: Path) -> None:
     try:
         job.status = JobStatus.processing
         update_job(job, 10, "آماده‌سازی فایل صوتی")
-        if transcriber is None:
+        active_transcriber = getattr(app.state, "transcriber", None)
+        if active_transcriber is None:
             raise RuntimeError("موتور رونویسی آماده نیست.")
-        progress_callback = lambda progress, stage: update_job(job, progress, stage)
-        if isinstance(transcriber, DemoTranscriber):
-            job.result = transcriber.transcribe(path, job.options, progress_callback)
+
+        def progress_callback(progress: int, stage: str) -> None:
+            update_job(job, progress, stage)
+
+        if isinstance(active_transcriber, DemoTranscriber):
+            job.result = active_transcriber.transcribe(path, job.options, progress_callback)
         else:
             job.result = await asyncio.to_thread(
-                transcriber.transcribe,
+                active_transcriber.transcribe,
                 path,
                 job.options,
                 progress_callback,
             )
         job.status = JobStatus.completed
         update_job(job, 100, "رونویسی آماده است")
-    except Exception as exc:  # noqa: BLE001 - job failures must be persisted for the client
+    except Exception as exc:
         job.status = JobStatus.failed
         job.error = str(exc)
         update_job(job, job.progress, "پردازش ناموفق بود")
@@ -87,12 +89,17 @@ async def process_audio(job_id: str, path: Path) -> None:
 
 @app.get("/api/health")
 async def health() -> dict:
-    return {"status": "ok", "engine": transcriber.name if transcriber else "loading"}
+    active_transcriber = getattr(app.state, "transcriber", None)
+    return {
+        "status": "ok",
+        "engine": active_transcriber.name if active_transcriber else "loading",
+    }
 
 
 @app.get("/api/capabilities", response_model=Capabilities)
 async def capabilities() -> Capabilities:
-    is_demo = isinstance(transcriber, DemoTranscriber) or transcriber is None
+    active_transcriber = getattr(app.state, "transcriber", None)
+    is_demo = isinstance(active_transcriber, DemoTranscriber) or active_transcriber is None
     return Capabilities(
         engine="demo" if is_demo else "faster-whisper",
         model="demo" if is_demo else settings.whisper_model,
@@ -182,9 +189,7 @@ async def export_transcription(job_id: str, format_name: str):
     if not job or job.status != JobStatus.completed or not job.result:
         raise HTTPException(status_code=404, detail="خروجی آماده‌ای برای دریافت وجود ندارد.")
 
-    headers = {
-        "Content-Disposition": f'attachment; filename="transcript.{format_name}"'
-    }
+    headers = {"Content-Disposition": f'attachment; filename="transcript.{format_name}"'}
     if format_name == "txt":
         return PlainTextResponse(job.result.text, headers=headers, media_type="text/plain")
     if format_name == "srt":

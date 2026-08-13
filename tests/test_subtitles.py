@@ -1,5 +1,5 @@
-from app.models import TranscriptSegment
-from app.services.subtitles import format_timestamp, segments_to_srt, segments_to_vtt
+from avanegar.models import TranscriptSegment
+from avanegar.services.subtitles import format_timestamp, segments_to_srt, segments_to_vtt
 
 
 def sample_segments() -> list[TranscriptSegment]:
@@ -29,4 +29,3 @@ def test_vtt_export() -> None:
     output = segments_to_vtt(sample_segments())
     assert output.startswith("WEBVTT")
     assert "00:00:01.250 --> 00:00:04.800" in output
-

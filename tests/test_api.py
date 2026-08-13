@@ -2,7 +2,7 @@ import asyncio
 
 import httpx
 
-from app.main import app
+from avanegar.main import app
 
 
 def test_demo_transcription_flow(monkeypatch) -> None:
@@ -29,9 +29,7 @@ def test_demo_transcription_flow(monkeypatch) -> None:
                 assert job.json()["status"] == "completed"
                 assert len(job.json()["result"]["segments"]) == 3
 
-                subtitle = await client.get(
-                    f"/api/transcriptions/{job_id}/export/srt"
-                )
+                subtitle = await client.get(f"/api/transcriptions/{job_id}/export/srt")
                 assert subtitle.status_code == 200
                 assert "-->" in subtitle.text
 
@@ -55,4 +53,3 @@ def test_unsupported_file_type_is_rejected(monkeypatch) -> None:
                 assert response.status_code == 415
 
     asyncio.run(run_request())
-

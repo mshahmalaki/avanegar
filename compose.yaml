@@ -9,9 +9,8 @@ services:
       WHISPER_DEVICE: "${WHISPER_DEVICE:-cpu}"
       WHISPER_COMPUTE_TYPE: "${WHISPER_COMPUTE_TYPE:-int8}"
     volumes:
-      - whisper-cache:/root/.cache/huggingface
+      - whisper-cache:/home/avanegar/.cache/huggingface
     restart: unless-stopped
 
 volumes:
   whisper-cache:
-

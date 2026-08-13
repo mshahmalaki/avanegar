@@ -64,4 +64,3 @@ def ensure_punctuation(text: str) -> str:
     if text and text[-1] not in ".!؟?…":
         text += "."
     return text
-

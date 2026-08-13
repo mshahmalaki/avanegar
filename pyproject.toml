@@ -22,7 +22,6 @@ classifiers = [
   "Environment :: Web Environment",
   "Framework :: FastAPI",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Natural Language :: Persian",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
@@ -40,7 +39,7 @@ dependencies = [
 ]
 
 [project.scripts]
-avanegar = "app.cli:main"
+avanegar = "avanegar.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/mshahmalaki/avanegar"
@@ -60,10 +59,10 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["app*"]
+include = ["avanegar*"]
 
 [tool.setuptools.package-data]
-app = ["static/*"]
+avanegar = ["static/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -75,6 +74,7 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["RUF001"]
 
 [tool.pylint.main]
 py-version = "3.11"
@@ -88,9 +88,12 @@ disable = [
   "broad-exception-caught",
   "duplicate-code",
   "fixme",
+  "import-outside-toplevel",
+  "invalid-name",
   "missing-class-docstring",
   "missing-function-docstring",
   "missing-module-docstring",
+  "too-many-locals",
   "too-few-public-methods",
 ]
 
